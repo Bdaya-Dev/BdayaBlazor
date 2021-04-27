@@ -1,0 +1,70 @@
+﻿<div>
+    <h5>@Header</h5>
+</div>
+<div class="wrapper">
+    <div class="ColorPicker">
+        <input value="@ColorPicked" type="color" id="primary_color" @onchange="ChangeColor" />
+    </div>
+
+    <div class="CurrentColor">
+        <p style="text-align:center; line-height:55px">@ColorPicked</p>
+    </div>
+
+</div>
+
+<style>
+    .wrapper {
+        display: flex
+    }
+
+    .ColorPicker {
+    }
+
+    .CurrentColor {
+        margin-left:-5px;
+        width: 100%;
+        height:55px;
+        border-radius: 30%;
+        background-image: radial-gradient(#FFFFFF 10% ,@ColorPicked 60% );
+    }
+
+    #primary_color {
+        border-radius: 100%;
+        height: 60px;
+        width: 60px;
+        border: none;
+        outline: none;
+        -webkit-appearance: none;
+    }
+
+        #primary_color::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        #primary_color::-webkit-color-swatch {
+            border: none;
+            border-radius: 100%;
+        }
+</style>
+
+@code {
+
+    [Parameter]
+    public string ColorPicked { get; set; } = "#404040";
+
+    [Parameter]
+    public string Header { get; set; } = "Pick Color";
+
+
+    [Parameter]
+    public EventCallback<string> OnChange { get; set; }
+
+
+    private Task ChangeColor(ChangeEventArgs e)
+    {
+        ColorPicked = e?.Value.ToString();
+        return OnChange.InvokeAsync(ColorPicked);
+    }
+
+
+}
